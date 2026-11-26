@@ -1,9 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dog Grooming Salon Booking Calculator</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007bff">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -53,11 +55,16 @@
                 <label>Total Price (RON):</label>
                 <input type="text" id="totalPrice" readonly>
             </div>
-                        <button type="button" id="calculateTotal" onclick="calculateTotal()">Calculate Total</button>
-            <button type="button" id="sendBooking" onclick="sendWhatsApp()">Send Booking via WhatsApp</button>
-
+            <button type="button" id="calculateTotal">Calculate Total</button>
+            <button type="button" id="sendBooking">Send Booking via WhatsApp</button>
         </form>
     </div>
+
     <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
 </body>
 </html>
