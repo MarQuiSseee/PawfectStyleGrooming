@@ -1,6 +1,6 @@
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open('grooming-app-v3').then((cache) =>
+    caches.open('grooming-app-v4').then((cache) =>
       cache.addAll(['./', './index.html', './styles.css', './script.js'])
     )
   );
