@@ -1,71 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dog Grooming Salon Booking Calculator</title>
+    <title>Pawfect Style Grooming</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#007bff">
-    <link rel="stylesheet" href="styles.css">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="stylesheet" href="styles.css?v=8">
 </head>
 <body>
     <div class="container">
-            <div class="lang-switch" style="display:flex; gap:8px; justify-content:flex-end; margin-bottom:10px;">
+        <div class="lang-switch" style="display:flex; gap:8px; justify-content:flex-end; margin-bottom:10px;">
             <button type="button" onclick="setLang('ro')" style="width:auto; padding:6px 10px;">🇷🇴 RO</button>
             <button type="button" onclick="setLang('hu')" style="width:auto; padding:6px 10px;">🇭🇺 HU</button>
             <button type="button" onclick="setLang('en')" style="width:auto; padding:6px 10px;">🇬🇧 EN</button>
         </div>
-        <h1>Dog Grooming Salon Booking Calculator</h1>
+
+        <img src="bg.png" alt="Pawfect Style Logo" class="salon-logo">
+        <h1>Kutyakozmetika Időpontfoglaló</h1>
+
         <form id="bookingForm">
             <div class="form-group">
-                <label for="customerName">Customer Name:</label>
+                <label for="customerName">Ügyfél neve:</label>
                 <input type="text" id="customerName" required>
             </div>
             <div class="form-group">
-                <label for="dogName">Dog Name:</label>
+                <label for="dogName">Kutya neve:</label>
                 <input type="text" id="dogName" required>
             </div>
             <div class="form-group">
-                <label for="dogSize">Dog Size:</label>
+                <label for="dogSize">Kutya mérete:</label>
                 <select id="dogSize" required>
-                    <option value="small">Small</option>
-                    <option value="medium">Medium</option>
-                    <option value="large">Large</option>
+                    <option value="small">Kicsi (50 RON)</option>
+                    <option value="medium">Közepes (75 RON)</option>
+                    <option value="large">Nagy (100 RON)</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Extra Services:</label>
+                <label id="servicesLabel">Extra szolgáltatások:</label>
                 <div>
                     <input type="checkbox" id="fullBath" value="25">
-                    <label for="fullBath">Full Bath (+25 RON)</label>
+                    <label for="fullBath">Teljes fürdetés (+25 RON)</label>
                 </div>
                 <div>
                     <input type="checkbox" id="haircutTrim" value="35">
-                    <label for="haircutTrim">Haircut & Trim (+35 RON)</label>
+                    <label for="haircutTrim">Nyírás és igazítás (+35 RON)</label>
                 </div>
                 <div>
                     <input type="checkbox" id="nailClipping" value="15">
-                    <label for="nailClipping">Nail Clipping (+15 RON)</label>
+                    <label for="nailClipping">Karomvágás (+15 RON)</label>
                 </div>
                 <div>
                     <input type="checkbox" id="earCleaning" value="15">
-                    <label for="earCleaning">Ear Cleaning (+15 RON)</label>
+                    <label for="earCleaning">Fültisztítás (+15 RON)</label>
                 </div>
             </div>
             <div class="form-group">
-                <label for="appointmentDateTime">Appointment Date & Time:</label>
+                <label for="appointmentDateTime">Időpont dátuma és órája:</label>
                 <input type="datetime-local" id="appointmentDateTime" required>
             </div>
             <div class="form-group">
-                <label>Total Price (RON):</label>
+                <label for="bookingNotes">Megjegyzés a kozmetikusnak:</label>
+                <textarea id="bookingNotes" rows="2" placeholder="Pl. kutyus fajtája, érzékenység..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="totalPrice" id="totalLabel">Végösszeg (RON):</label>
                 <input type="text" id="totalPrice" readonly>
             </div>
-            <button type="button" id="calculateTotal">Calculate Total</button>
-            <button type="button" id="sendBooking">Send Booking via WhatsApp</button>
+            <button type="button" id="calculateTotal">Összeg kiszámítása</button>
+            <button type="button" id="sendBooking">Foglalás küldése WhatsAppon</button>
         </form>
+
+        <hr class="divider">
+
+        <div class="guestbook">
+            <h2 id="gbTitle">🐾 Vendégkönyv & Vélemények</h2>
+            <div class="form-group">
+                <input type="text" id="gbName" placeholder="Neved / Kutyus neve">
+            </div>
+            <div class="form-group">
+                <textarea id="gbMessage" rows="2" placeholder="Írd meg a véleményed..."></textarea>
+            </div>
+            <button type="button" id="gbSubmit" onclick="addGuestbookEntry()">Üzenet közzététele</button>
+            <div id="gbList" class="gb-list"></div>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=8"></script>
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
