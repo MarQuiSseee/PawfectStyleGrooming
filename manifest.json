@@ -1,7 +1,8 @@
 {
-  "name": "Dog Grooming Salon Booking",
-  "short_name": "Dog Grooming",
-  "start_url": "./index.html",
+  "name": "Pawfect Style Grooming",
+  "short_name": "PawfectStyle",
+  "start_url": "/PawfectStyleGrooming/index.html",
+  "scope": "/PawfectStyleGrooming/",
   "display": "standalone",
   "background_color": "#1e293b",
   "theme_color": "#007bff",
