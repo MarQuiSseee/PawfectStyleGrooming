@@ -1,111 +1,230 @@
-document.getElementById('calculateTotal').addEventListener('click', calculateTotal);
-document.getElementById('sendBooking').addEventListener('click', sendBooking);
-document.getElementById('dogSize').addEventListener('change', calculateTotal);
-document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener('change', calculateTotal));
+@import url('https://googleapis.com');
 
-function calculateTotal() {
-    const basePrices = {
-        small: 50,
-        medium: 75,
-        large: 100
-    };
-
-    const dogSize = document.getElementById('dogSize').value;
-    const extraServices = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => parseInt(cb.value) || 0);
-    const totalPrice = (basePrices[dogSize] || 0) + extraServices.reduce((acc, val) => acc + val, 0);
-
-    document.getElementById('totalPrice').value = `Total: ${totalPrice} RON`;
+* {
+    box-sizing: border-box;
 }
 
-function sendBooking() {
-    calculateTotal();
-    const customerName = document.getElementById('customerName').value;
-    const dogName = document.getElementById('dogName').value;
-    const dogSizeSelect = document.getElementById('dogSize');
-    const dogSize = dogSizeSelect.options[dogSizeSelect.selectedIndex].text;
-    const extraServices = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.parentElement.innerText.trim());
-    const appointmentDateTime = document.getElementById('appointmentDateTime').value;
-    const totalPrice = document.getElementById('totalPrice').value;
-
-    const message = `Customer Name: ${customerName}\nDog Name: ${dogName}\nDog Size: ${dogSize}\nSelected Services: ${extraServices.length ? extraServices.join(', ') : 'None'}\nAppointment Date & Time: ${appointmentDateTime}\n${totalPrice}`;
-
-    const url = `https://wa.me/40749941560?text=${encodeURIComponent(message)}`;
-    window.location.href = url;
+body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url('bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-color: #1e293b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 16px;
 }
-const translations = {
-    ro: {
-        title: "Calculator Programare Salon Canin",
-        customer: "Nume Client:",
-        dog: "Nume Câine:",
-        size: "Talie Câine:",
-        small: "Mică (50 RON)",
-        medium: "Medie (75 RON)",
-        large: "Mare (100 RON)",
-        services: "Servicii Extra:",
-        bath: "Spălat Complet (+25 RON)",
-        trim: "Tuns & Aranjat (+35 RON)",
-        nails: "Tăiat Unghii (+15 RON)",
-        ears: "Curățat Urechi (+15 RON)",
-        date: "Data și Ora Programării:",
-        totalLabel: "Preț Total (RON):",
-        calcBtn: "Calculează Totalul",
-        sendBtn: "Trimite Programarea pe WhatsApp"
-    },
-    hu: {
-        title: "Kutyakozmetika Időpontfoglaló",
-        customer: "Ügyfél neve:",
-        dog: "Kutya neve:",
-        size: "Kutya mérete:",
-        small: "Kicsi (50 RON)",
-        medium: "Közepes (75 RON)",
-        large: "Nagy (100 RON)",
-        services: "Extra szolgáltatások:",
-        bath: "Teljes fürdetés (+25 RON)",
-        trim: "Nyírás és igazítás (+35 RON)",
-        nails: "Karomvágás (+15 RON)",
-        ears: "Fültisztítás (+15 RON)",
-        date: "Időpont dátuma és órája:",
-        totalLabel: "Végösszeg (RON):",
-        calcBtn: "Összeg kiszámítása",
-        sendBtn: "Foglalás küldése WhatsAppon"
-    },
-    en: {
-        title: "Dog Grooming Salon Booking Calculator",
-        customer: "Customer Name:",
-        dog: "Dog Name:",
-        size: "Dog Size:",
-        small: "Small (50 RON)",
-        medium: "Medium (75 RON)",
-        large: "Large (100 RON)",
-        services: "Extra Services:",
-        bath: "Full Bath (+25 RON)",
-        trim: "Haircut & Trim (+35 RON)",
-        nails: "Nail Clipping (+15 RON)",
-        ears: "Ear Cleaning (+15 RON)",
-        date: "Appointment Date & Time:",
-        totalLabel: "Total Price (RON):",
-        calcBtn: "Calculate Total",
-        sendBtn: "Send Booking via WhatsApp"
+
+@media (max-width: 900px) {
+    body {
+        background-size: contain;
+        background-position: center top;
+        align-items: flex-start;
     }
-};
+    .container {
+        margin-top: 180px;
+    }
+}
 
-function setLang(lang) {
-    const t = translations[lang];
-    document.querySelector('h1').innerText = t.title;
-    document.querySelector('label[for="customerName"]').innerText = t.customer;
-    document.querySelector('label[for="dogName"]').innerText = t.dog;
-    document.querySelector('label[for="dogSize"]').innerText = t.size;
+.container {
+    background: rgba(255, 255, 255, 0.62);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    padding: 24px 20px;
+    border-radius: 22px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 440px;
+}
 
-    const sizeOpts = document.getElementById('dogSize').options;
-    sizeOpts[0].text = t.small;
-    sizeOpts[1].text = t.medium;
-    sizeOpts[2].text = t.large;
+.salon-logo {
+    display: block;
+    width: 92px;
+    height: 92px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    border: 3px solid #d4af37;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
 
-    document.querySelector('label[for="fullBath"]').innerText = t.bath;
-    document.querySelector('label[for="haircutTrim"]').innerText = t.trim;
-    document.querySelector('label[for="nailClipping"]').innerText = t.nails;
-    document.querySelector('label[for="earCleaning"]').innerText = t.ears;
-    document.querySelector('label[for="appointmentDateTime"]').innerText = t.date;
-    document.getElementById('calculateTotal').innerText = t.calcBtn;
-    document.getElementById('sendBooking').innerText = t.sendBtn;
+h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: center;
+    margin: 4px 0 18px;
+}
+
+h2 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: center;
+    margin: 0 0 12px;
+}
+
+.lang-switch button {
+    background: rgba(255, 255, 255, 0.78);
+    color: #0f172a;
+    border: 1px solid rgba(15, 23, 42, 0.25);
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.lang-switch button:hover {
+    background: #0f172a;
+    color: #ffffff;
+}
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    font-size: 13.5px;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+input[type="text"],
+input[type="datetime-local"],
+select,
+textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid rgba(148, 163, 184, 0.85);
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.88);
+    color: #0f172a;
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #d4af37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+}
+
+.form-group > div {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1.5px solid rgba(203, 213, 225, 0.85);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+}
+
+.form-group > div:hover {
+    border-color: #d4af37;
+    background: rgba(254, 252, 232, 0.92);
+}
+
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #0f172a;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.form-group > div label {
+    margin: 0;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 1;
+}
+
+#totalPrice {
+    font-size: 17px;
+    font-weight: 700;
+    color: #064e3b;
+    background: rgba(236, 253, 245, 0.92);
+    border: 2px solid #10b981;
+    text-align: center;
+}
+
+button {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.15s ease;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#calculateTotal {
+    background: #0f172a;
+    color: #ffffff;
+}
+
+#sendBooking {
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(37, 211, 102, 0.35);
+}
+
+.divider {
+    border: none;
+    border-top: 1.5px solid rgba(15, 23, 42, 0.15);
+    margin: 24px 0 18px;
+}
+
+#gbSubmit {
+    background: #d4af37;
+    color: #0f172a;
+}
+
+.gb-list {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.gb-item {
+    background: rgba(255, 255, 255, 0.85);
+    border-left: 4px solid #d4af37;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13.5px;
+}
+
+.gb-item strong {
+    display: block;
+    color: #0f172a;
+    margin-bottom: 3px;
+}
+
+.gb-item span {
+    font-size: 11.5px;
+    color: #64748b;
+}
+
+.gb-item p {
+    margin: 4px 0 0;
+    color: #1e293b;
 }
