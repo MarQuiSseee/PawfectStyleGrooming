@@ -1,18 +1,26 @@
-﻿body {
+body {
     font-family: Arial, sans-serif;
-    background-image: url('bg.png'); /* Replace with actual image URL */
+    background-image: url('bg.png');
+    background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    background-color: rgba(0, 0, 0, 0.3); /* Subtle dark overlay */
+    background-color: #1e293b;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
 }
 
+@media (max-width: 600px) {
+    body {
+        background-size: contain;
+        background-position: center top;
+    }
+}
+
 .container {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.85);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
