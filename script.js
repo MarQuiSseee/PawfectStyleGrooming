@@ -176,11 +176,6 @@ button:active {
     transform: scale(0.98);
 }
 
-#calculateTotal {
-    background: #0f172a;
-    color: #ffffff;
-}
-
 #sendBooking {
     background: linear-gradient(135deg, #25d366, #128c7e);
     color: #ffffff;
